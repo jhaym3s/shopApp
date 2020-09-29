@@ -10,6 +10,7 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color color = Colors.deepOrange[100];
     return ClipRRect(
       borderRadius: BorderRadius.circular(15),
       child: GridTile(
