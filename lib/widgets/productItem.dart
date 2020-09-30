@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import '../screens/productDetailScreen.dart';
+import 'package:provider/provider.dart';
+import '../providers/product.dart';
 
 class ProductItem extends StatelessWidget {
-  final String imageUrl;
-  final String id;
-  final String title;
-
-  ProductItem(this.imageUrl, this.id, this.title);
+  // final String imageUrl;
+  // final String id;
+  // final String title;
+  //
+  // ProductItem(this.imageUrl, this.id, this.title);
 
   @override
   Widget build(BuildContext context) {
+    final product = Provider.of<Product>(context);
     Color color = Colors.deepOrange[100];
     return ClipRRect(
       borderRadius: BorderRadius.circular(15),
@@ -17,17 +20,19 @@ class ProductItem extends StatelessWidget {
         child: GestureDetector(
           onTap: () {
             Navigator.of(context)
-                .pushNamed(ProductDetailScreen.routeName, arguments: id);
+                .pushNamed(ProductDetailScreen.routeName, arguments: product.id);
           },
           child: Image.network(
-            imageUrl,
+            product.imageUrl,
             fit: BoxFit.cover,
           ),
         ),
         footer: GridTileBar(
           leading: IconButton(
-            icon: Icon(Icons.favorite),
-            onPressed: () {},
+            icon: Icon(product.isFavourite?Icons.favorite:Icons.favorite_border),
+            onPressed: () {
+              product.toggleFavoritesStatus();
+            },
             color: Theme.of(context).accentColor,
           ),
           trailing: IconButton(
@@ -37,7 +42,7 @@ class ProductItem extends StatelessWidget {
           ),
           backgroundColor: Colors.black54,
           title: Text(
-            title,
+            product.title,
             textAlign: TextAlign.center,
           ),
         ),
