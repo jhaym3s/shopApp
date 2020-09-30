@@ -12,8 +12,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (BuildContext context) => ProductsProvider(),
+    return ChangeNotifierProvider.value(
+      value: ProductsProvider(),
+      //you use the above method if you are not really interested in the context
+      //apparently the .value is a better than the other when it comes to widgets that exceed the screen
+      // like grid view or the list view
+      //create: (BuildContext context) => ProductsProvider(),
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
