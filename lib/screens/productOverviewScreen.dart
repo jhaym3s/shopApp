@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../providers/cart.dart';
+import '../widgets/badge.dart';
 import '../providers/productProvider.dart';
 import '../widgets/productGrid.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +21,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Shop"),
+        title: Text("Jumia de owe me ooo"),
         actions: [
           PopupMenuButton(itemBuilder: (context) => [
             PopupMenuItem(child: Text("Favourites Only"),value: filterOptions.Favorites,),
@@ -32,7 +34,11 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
                 _showFavouritesOnly = false;
               }
             });
-          },icon: Icon(Icons.more_vert),)
+          },icon: Icon(Icons.more_vert),),
+          Consumer<Cart>(builder: (context, value, childIconButton) => Badge(
+              child: childIconButton,
+              value: value.itemCount.toString()),child: IconButton(icon: Icon(Icons.shopping_cart), onPressed: (){}), )
+
         ],
       ),
       body: ProductGrid(_showFavouritesOnly)
