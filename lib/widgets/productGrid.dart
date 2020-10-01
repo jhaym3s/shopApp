@@ -20,9 +20,6 @@ class ProductGrid extends StatelessWidget {
         value: products[index],
         //create: (BuildContext context) => products[index],
         child: ProductItem(
-            // products[index].imageUrl,
-            // products[index].id,
-            // products[index].title
     ),
       ),
       itemCount: products.length,
