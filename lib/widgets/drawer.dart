@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop/screens/ordersScreen.dart';
-
+// this was used in the product overview scree
 class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -8,7 +8,7 @@ class AppDrawer extends StatelessWidget {
       child: Column(
         children: [
           AppBar(
-            title: Text("What you are thinking now"),
+            title: Text("Hey :)"),
             automaticallyImplyLeading: false,
           ),
           Divider(),

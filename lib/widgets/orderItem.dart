@@ -37,9 +37,11 @@ class _OrdersItemState extends State<OrdersItem> {
               Text(e.title,style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
               Text("${e.quantity} x ${e.price}",style: TextStyle(fontSize: 20,color: Colors.grey),)
             ],
-          )).toList(),) ,),
-      ],
-    ),
+          ),).toList(),
+           ),
+          ),
+        ],
+     ),
     );
   }
 }

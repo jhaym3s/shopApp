@@ -13,7 +13,6 @@ class CartItem extends StatelessWidget {
   final int quantity;
   @override
   Widget build(BuildContext context) {
-
     return Dismissible(
       key: ValueKey(id),
       background: Container(
@@ -26,6 +25,22 @@ class CartItem extends StatelessWidget {
       onDismissed: (direction){
         Provider.of<Cart>(context,listen: false).removeItem(productId);
       },
+      confirmDismiss: (direction) => showDialog(context: context,builder: (context) =>AlertDialog(
+        title: Text("Are you sure?"),
+        content: Text("Do you want to delete the whole product"),
+        actions: [
+          FlatButton(onPressed: (){
+          Navigator.of(context).pop(false);
+          // Scaffold.of(context).hideCurrentSnackBar();
+          // Scaffold.of(context).showSnackBar(SnackBar(content: Text("The product weren't deleted"),));
+          }, child:Text("NO")),
+          FlatButton(onPressed: (){
+            Navigator.of(context).pop(true);
+            // Scaffold.of(context).hideCurrentSnackBar();
+            // Scaffold.of(context).showSnackBar(SnackBar(content: Text("So you no get money to buy you add am to cart"),));
+          }, child:Text("YES")),
+        ],
+      ) ),
       child: Card(
         margin: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
         child: Padding(

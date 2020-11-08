@@ -6,12 +6,6 @@ import 'package:provider/provider.dart';
 import '../providers/product.dart';
 
 class ProductItem extends StatelessWidget {
-  // final String imageUrl;
-  // final String id;
-  // final String title;
-  //
-  // ProductItem(this.imageUrl, this.id, this.title);
-
   @override
   Widget build(BuildContext context) {
     final product = Provider.of<Product>(context);
@@ -33,8 +27,9 @@ class ProductItem extends StatelessWidget {
     builder: (BuildContext context, products, Widget child) {
       return IconButton(
         icon: Icon(
-            product.isFavourite ? Icons.favorite : Icons.favorite_border),
+            products.isFavourite ? Icons.favorite : Icons.favorite_border),
         onPressed: () {
+          //toggleFavoritesStatus is in the product.dart file
           product.toggleFavoritesStatus();
         },
         color: Theme
@@ -46,7 +41,17 @@ class ProductItem extends StatelessWidget {
             trailing: IconButton(
               icon: Icon(Icons.shopping_cart),
               onPressed: () {
+                //addItem used in the card.dart file
                 cart.addItem(product.id, product.price, product.title);
+                Scaffold.of(context).hideCurrentSnackBar();
+                Scaffold.of(context).showSnackBar(SnackBar(content: Text("Added ${product.title} to cart"),
+                duration: Duration(seconds: 3),
+                action: SnackBarAction(label: "Undo", onPressed: (){
+                  //removeSingleItem is created in the /provider/cart file
+                  cart.removeSingleProduct(product.id);
+                }),
+                  ),
+                );
               },
               color: Theme.of(context).accentColor,
             ),

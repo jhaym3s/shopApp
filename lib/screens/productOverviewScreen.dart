@@ -18,7 +18,7 @@ class ProductOverviewScreen extends StatefulWidget {
 }
 
 class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
-  var _showFavouritesOnly = false;
+  var _showFavouritesOnly  = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,8 +50,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
             Consumer<Cart>(
               builder: (context, value, childIconButton) => Badge(
                   child: childIconButton, value: value.itemCount.toString()),
-              child:
-                  IconButton(icon: Icon(Icons.shopping_cart), onPressed: () {
+              child: IconButton(icon: Icon(Icons.shopping_cart), onPressed: () {
                     Navigator.of(context).pushNamed(CartScreen.routename);
                   }),
             ),

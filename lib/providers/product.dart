@@ -18,6 +18,7 @@ class Product with ChangeNotifier{
     @required this.price});
 
   void toggleFavoritesStatus(){
+    //used in the productItem file
     isFavourite = !isFavourite;
     notifyListeners();
   }

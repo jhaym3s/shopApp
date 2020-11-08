@@ -10,6 +10,7 @@ class ProductDetailScreen extends StatelessWidget {
     //I created a function 'findById' in the 'productProvider' class
     final loadedProduct = Provider.of<ProductsProvider>(context, listen: false)
         .findById(productId);
+    //the findById was made in the productProvider class
     //Okay you can do the below or the above
     //final loadedProduct = Provider.of<ProductsProvider>(context).item.firstWhere((product) => product.id == productId );
     return Scaffold(

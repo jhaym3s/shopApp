@@ -56,8 +56,10 @@ class ProductsProvider with ChangeNotifier{
   // }
 
   List<Product> get favoriteItem {
+    //used in the productGrid
     return _item.where((product) => product.isFavourite).toList();
   }
+  // used in the productDetail screen
   Product findById(String id){
     return _item.firstWhere((product) => product.id == id);
   }
