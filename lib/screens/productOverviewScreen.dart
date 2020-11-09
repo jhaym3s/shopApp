@@ -18,6 +18,7 @@ class ProductOverviewScreen extends StatefulWidget {
 }
 
 class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
+  var darkMode = false;
   var _showFavouritesOnly  = false;
   @override
   Widget build(BuildContext context) {
@@ -54,9 +55,16 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
                     Navigator.of(context).pushNamed(CartScreen.routename);
                   }),
             ),
+            IconButton(icon: Icon(darkMode?Icons.wb_sunny_rounded:Icons.nightlight_round), onPressed: (){
+              setState(() {
+                darkMode = !darkMode;
+              });
+            }),
           ],
         ),
         drawer: AppDrawer(),
-        body: ProductGrid(_showFavouritesOnly));
+        body: ProductGrid(_showFavouritesOnly),
+    backgroundColor: darkMode?Colors.black54:Colors.white,
+    );
   }
 }

@@ -30,7 +30,7 @@ class _OrdersItemState extends State<OrdersItem> {
             });
           },),
         ),
-        if(expanded) Container(height: min(widget.orderData.products.length*20.0 + 20, 160),
+        if(expanded) Container(height:min(widget.orderData.products.length*20.0 + 20, 160),
           child:ListView(children: widget.orderData.products.map((e) => Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

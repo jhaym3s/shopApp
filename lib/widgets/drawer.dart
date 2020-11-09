@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop/screens/ordersScreen.dart';
-// this was used in the product overview scree
+import '../screens/userProductScreen.dart';
+
 class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -21,6 +22,12 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             leading: IconButton(icon: Icon(Icons.payment), onPressed: (){
               Navigator.of(context).pushReplacementNamed(OrdersScreen.routeName);
+            }),
+          ),
+          Divider(),
+          ListTile(
+            leading: IconButton(icon: Icon(Icons.edit), onPressed: (){
+              Navigator.of(context).pushReplacementNamed(UserProductScreen.routeName);
             }),
           ),
         ],
