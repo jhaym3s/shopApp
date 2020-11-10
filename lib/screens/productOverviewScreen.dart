@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:shop/screens/cartScreen.dart';
+import 'package:provider/provider.dart';
+
+import '../screens/cartScreen.dart';
 import '../widgets/drawer.dart';
 import '../providers/cart.dart';
 import '../widgets/badge.dart';
-import '../providers/productProvider.dart';
 import '../widgets/productGrid.dart';
-import 'package:provider/provider.dart';
 
 enum filterOptions {
   Favorites,
   All,
 }
-
 class ProductOverviewScreen extends StatefulWidget {
   @override
   _ProductOverviewScreenState createState() => _ProductOverviewScreenState();
 }
-
 class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
   var darkMode = false;
   var _showFavouritesOnly  = false;

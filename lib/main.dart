@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop/providers/orders.dart';
+
+import './providers/orders.dart';
 import './screens/cartScreen.dart';
 import './screens/ordersScreen.dart';
 import './screens/userProductScreen.dart';
@@ -8,12 +9,11 @@ import './providers/cart.dart';
 import './screens/productDetailScreen.dart';
 import './screens/productOverviewScreen.dart';
 import './providers/productProvider.dart';
-
+import './screens/edit_product_screen.dart';
 
 void main() {
   runApp(MyApp());
 }
-
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -39,6 +39,7 @@ class MyApp extends StatelessWidget {
           CartScreen.routename: (context) => CartScreen(),
           OrdersScreen.routeName: (context)=> OrdersScreen(),
           UserProductScreen.routeName:(context)=>UserProductScreen(),
+          EditProductScreen.routeName:(context)=>EditProductScreen(),
         },
       ),
     );
