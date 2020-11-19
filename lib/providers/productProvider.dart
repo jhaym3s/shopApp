@@ -73,4 +73,12 @@ class ProductsProvider with ChangeNotifier{
   // _item.insert(0, newProduct); //if you want to inset the product in a certain position in the list
     notifyListeners();
   }
+  void updateProduct(String id, Product newProduct){
+   final productIndex = _item.indexWhere((element) => element.id == id);
+   if(productIndex >= 0){
+     _item[productIndex] = newProduct;
+     notifyListeners();
+   }else{
+   }
+  }
 }

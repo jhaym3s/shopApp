@@ -15,37 +15,50 @@ class UserProductScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text("User Product screen"),
         actions: [
-          IconButton(icon: Icon(Icons.add), onPressed: (){
-            Navigator.of(context).pushNamed(EditProductScreen.routeName);
-          })
+          IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () {
+                Navigator.of(context).pushNamed(EditProductScreen.routeName);
+              })
         ],
       ),
-      body: Padding(padding: EdgeInsets.all(8),child:
-        ListView.builder(itemBuilder: (context, index) => UserProductItem(productData.item[index].title,
-            productData.item[index].imageUrl),
-          itemCount:productData.item.length,),),
-        drawer: Drawer(
-          child: Column(
-              children: [
-          AppBar(
-          title: Text("Hey :)"),
-          automaticallyImplyLeading: false,
+      body: Padding(
+        padding: EdgeInsets.all(8),
+        child: ListView.builder(
+          itemBuilder: (context, index) =>
+              UserProductItem(
+                //UserProductItem is a custom made widget
+              productData.item[index].title,
+              productData.item[index].id,
+              productData.item[index].imageUrl),
+          itemCount: productData.item.length,
         ),
-              Divider(),
-              ListTile(
-                  leading: IconButton(icon: Icon(Icons.shop), onPressed: (){
-          Navigator.of(context).pushReplacementNamed("/");
-        }),
       ),
-            Divider(),
-            ListTile(
-              leading: IconButton(icon: Icon(Icons.payment), onPressed: (){
-          Navigator.of(context).pushReplacementNamed(OrdersScreen.routeName);
-        }),
-      ),
-        ]
+      drawer: Drawer(
+        child: Column(children: [
+          AppBar(
+            title: Text("Hey :)"),
+            automaticallyImplyLeading: false,
           ),
-    ),
+          Divider(),
+          ListTile(
+            leading: IconButton(
+                icon: Icon(Icons.shop),
+                onPressed: () {
+                  Navigator.of(context).pushReplacementNamed("/");
+                }),
+          ),
+          Divider(),
+          ListTile(
+            leading: IconButton(
+                icon: Icon(Icons.payment),
+                onPressed: () {
+                  Navigator.of(context)
+                      .pushReplacementNamed(OrdersScreen.routeName);
+                }),
+          ),
+        ]),
+      ),
     );
   }
 }

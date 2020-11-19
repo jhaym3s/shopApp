@@ -16,12 +16,15 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _imageController = TextEditingController();
   final _form = GlobalKey<FormState>();
   var editedProducts =
-      Product(
-          id: null,
-          title: "",
-          description: "",
-          imageUrl: "",
-          price: 0);
+      Product( title: "", description: "", imageUrl: "", price: 0, id: null);
+  var isInit = true;
+  var initValue = {
+    "title": "",
+    "description": "",
+    "price": "",
+    "imageUrl": "",
+    //"id": ""
+  };
 
   @override
   void initState() {
@@ -29,16 +32,37 @@ class _EditProductScreenState extends State<EditProductScreen> {
     _imageUrlFocusNode.addListener(updateURL);
     super.initState();
   }
-
   @override
   void dispose() {
     // TODO: implement dispose
     _priceFocusNode.dispose();
     _descriptionFocusNode.dispose();
     _imageUrlFocusNode.removeListener(updateURL);
-    _imageController.dispose();// always remember you dispose the controller(if any) before the focus node
+    _imageController
+        .dispose(); // always remember you dispose the controller(if any) before the focus node
     _imageUrlFocusNode.dispose();
     super.dispose();
+  }
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    if(isInit){
+      final productId = ModalRoute.of(context).settings.arguments as String;
+      if(productId!= null){
+        editedProducts = Provider.of<ProductsProvider>(context).findById(productId);
+        initValue = {
+          "title": editedProducts.title,
+          "description": editedProducts.description,
+          "price":  editedProducts.price.toString(),
+          //"imageUrl": editedProducts.imageUrl,
+        };
+        _imageController.text = editedProducts.imageUrl;
+        //making imageController the initialValue since both can not exist in same TextFormField
+      }
+
+    }
+    isInit = false ;
+    super.didChangeDependencies();
   }
 
   void updateURL() {
@@ -46,18 +70,26 @@ class _EditProductScreenState extends State<EditProductScreen> {
       setState(() {});
     }
   }
+
   void saveForm() {
     final isValid = _form.currentState.validate();
     if (!isValid) {
       return;
     }
-      _form.currentState.save();
-     Provider.of<ProductsProvider>(context,listen: false).addProduct(editedProducts);
-     Navigator.of(context).pop();
+    _form.currentState.save();
+    if(editedProducts.id != null){
+      Provider.of<ProductsProvider>(context, listen: false)
+          .updateProduct(editedProducts.id, editedProducts);
+    }else {
+      Provider.of<ProductsProvider>(context, listen: false)
+          .addProduct(editedProducts);
+    }
+    Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
+    // final productId =  ModalRoute.of(context).settings.arguments as String;
     return Scaffold(
       appBar: AppBar(
         title: Text("Edit Page"),
@@ -73,13 +105,15 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 decoration: InputDecoration(
                   labelText: "Title",
                 ),
+                initialValue: initValue["title"],
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (value) {
                   FocusScope.of(context).requestFocus(_priceFocusNode);
                 },
                 onSaved: (newValue) {
                   editedProducts = Product(
-                      id: null,
+                      id: editedProducts.id,
+                      isFavourite: editedProducts.isFavourite,
                       title: newValue,
                       description: editedProducts.description,
                       imageUrl: editedProducts.imageUrl,
@@ -96,12 +130,14 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   decoration: InputDecoration(
                     labelText: "Price",
                   ),
+                  initialValue: initValue["price"],
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.number,
                   focusNode: _priceFocusNode,
                   onSaved: (newValue) {
                     editedProducts = Product(
-                        id: null,
+                        id: editedProducts.id,
+                        isFavourite: editedProducts.isFavourite,
                         title: editedProducts.title,
                         description: editedProducts.description,
                         imageUrl: editedProducts.imageUrl,
@@ -122,12 +158,14 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   labelText: "Description",
                 ),
                 // textInputAction: TextInputAction.newline,
+                initialValue: initValue["description"],
                 keyboardType: TextInputType.text,
                 focusNode: _descriptionFocusNode,
                 maxLines: 3,
                 onSaved: (newValue) {
                   editedProducts = Product(
-                      id: null,
+                      id: editedProducts.id,
+                      isFavourite: editedProducts.isFavourite,
                       title: editedProducts.title,
                       description: newValue,
                       imageUrl: editedProducts.imageUrl,
@@ -166,6 +204,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       decoration: InputDecoration(
                         labelText: "hey:)",
                       ),
+                     // initialValue: initValue["imageUrl"],
+                      //You can't have the initialValue and controller in the same TextFormField
                       textInputAction: TextInputAction.done,
                       keyboardType: TextInputType.url,
                       focusNode: _imageUrlFocusNode,
@@ -173,7 +213,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       onFieldSubmitted: (value) => saveForm(),
                       onSaved: (newValue) {
                         editedProducts = Product(
-                            id: null,
+                            id: editedProducts.id,
+                            isFavourite: editedProducts.isFavourite,
                             title: editedProducts.title,
                             description: editedProducts.description,
                             imageUrl: newValue,
@@ -183,15 +224,19 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         if (!value.startsWith("http") &&
                             (!value.startsWith("https"))) {
                           return "Invalid address";
-                        }else if(!value.endsWith(".jpg") && !value.endsWith(".png") && !value.endsWith(".jpeg")){
+                        } else if (!value.endsWith(".jpg") &&
+                            !value.endsWith(".png") &&
+                            !value.endsWith(".jpeg")) {
                           return "Add image format";
                         }
                         return null;
                       },
                     ),
                   )
-                ],),
-            ],),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

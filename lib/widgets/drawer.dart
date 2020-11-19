@@ -23,6 +23,7 @@ class AppDrawer extends StatelessWidget {
             leading: IconButton(icon: Icon(Icons.payment), onPressed: (){
               Navigator.of(context).pushReplacementNamed(OrdersScreen.routeName);
             }),
+
           ),
           Divider(),
           ListTile(
