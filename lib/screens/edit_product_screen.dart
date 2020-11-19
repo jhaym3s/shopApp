@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/productProvider.dart';
 import '../providers/product.dart';
 
 class EditProductScreen extends StatefulWidget {
@@ -14,7 +16,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _imageController = TextEditingController();
   final _form = GlobalKey<FormState>();
   var editedProducts =
-      Product(id: null, title: "", description: "", imageUrl: "", price: 0);
+      Product(
+          id: null,
+          title: "",
+          description: "",
+          imageUrl: "",
+          price: 0);
 
   @override
   void initState() {
@@ -26,13 +33,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
   @override
   void dispose() {
     // TODO: implement dispose
+    _priceFocusNode.dispose();
+    _descriptionFocusNode.dispose();
     _imageUrlFocusNode.removeListener(updateURL);
-    _priceFocusNode.dispose();
-    _descriptionFocusNode.dispose();
+    _imageController.dispose();// always remember you dispose the controller(if any) before the focus node
     _imageUrlFocusNode.dispose();
-    _imageController.dispose();
-    _priceFocusNode.dispose();
-    _descriptionFocusNode.dispose();
     super.dispose();
   }
 
@@ -41,19 +46,14 @@ class _EditProductScreenState extends State<EditProductScreen> {
       setState(() {});
     }
   }
-
   void saveForm() {
     final isValid = _form.currentState.validate();
     if (!isValid) {
       return;
     }
-    if (isValid) {
       _form.currentState.save();
-      print(editedProducts.title);
-      print(editedProducts.price);
-      print(editedProducts.description);
-      print(editedProducts.imageUrl);
-    }
+     Provider.of<ProductsProvider>(context,listen: false).addProduct(editedProducts);
+     Navigator.of(context).pop();
   }
 
   @override
@@ -190,10 +190,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       },
                     ),
                   )
-                ],
-              ),
-            ],
-          ),
+                ],),
+            ],),
         ),
       ),
     );

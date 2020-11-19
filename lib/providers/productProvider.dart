@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-//import 'package:flutter/widgets.dart';
+
 import './product.dart';
 
 
@@ -63,8 +63,14 @@ class ProductsProvider with ChangeNotifier{
   Product findById(String id){
     return _item.firstWhere((product) => product.id == id);
   }
-  void addProduct(){
-   // _item.add(value);
+  void addProduct(Product product){
+   final newProduct = Product(
+       id:DateTime.now().toString(),
+       title: product.title,
+       description:product.description, imageUrl: product.imageUrl,
+       price: product.price);
+   _item.add(newProduct);//if you want to add te product to the end of the list
+  // _item.insert(0, newProduct); //if you want to inset the product in a certain position in the list
     notifyListeners();
   }
 }
