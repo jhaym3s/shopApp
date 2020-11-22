@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../screens/edit_product_screen.dart';
 import '../providers/productProvider.dart';
 import '../widgets/userProductItem.dart';
-import 'ordersScreen.dart';
+import '../widgets/drawer.dart';
+//import 'ordersScreen.dart';
 
 class UserProductScreen extends StatelessWidget {
   static const routeName = "/userProductScreen";
@@ -22,43 +22,20 @@ class UserProductScreen extends StatelessWidget {
               })
         ],
       ),
+      drawer: AppDrawer(),
       body: Padding(
         padding: EdgeInsets.all(8),
         child: ListView.builder(
-          itemBuilder: (context, index) =>
+          itemBuilder: (_, index) =>
               UserProductItem(
                 //UserProductItem is a custom made widget
+                productData.item[index].id,
               productData.item[index].title,
-              productData.item[index].id,
               productData.item[index].imageUrl),
           itemCount: productData.item.length,
         ),
       ),
-      drawer: Drawer(
-        child: Column(children: [
-          AppBar(
-            title: Text("Hey :)"),
-            automaticallyImplyLeading: false,
-          ),
-          Divider(),
-          ListTile(
-            leading: IconButton(
-                icon: Icon(Icons.shop),
-                onPressed: () {
-                  Navigator.of(context).pushReplacementNamed("/");
-                }),
-          ),
-          Divider(),
-          ListTile(
-            leading: IconButton(
-                icon: Icon(Icons.payment),
-                onPressed: () {
-                  Navigator.of(context)
-                      .pushReplacementNamed(OrdersScreen.routeName);
-                }),
-          ),
-        ]),
-      ),
+
     );
   }
 }
