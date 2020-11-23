@@ -100,8 +100,18 @@ class _EditProductScreenState extends State<EditProductScreen> {
       });
       Navigator.of(context).pop();
     } else {
-      Provider.of<ProductsProvider>(context, listen: false).addProduct(_editedProduct)
-          .then((value) {
+      Provider.of<ProductsProvider>(context, listen: false)
+          .addProduct(_editedProduct)
+          .catchError((error){
+            return showDialog(context: context,builder: (context) => AlertDialog(
+              title: Text("An error occurred"),actions: [
+                FlatButton(onPressed: (){
+                  Navigator.of(context).pop();
+                }, child:Text("Okay"))
+            ],
+              content: Text("Something went wrong"),
+            ),);
+      }).then((value) {
         setState(() {
           isLoading = false;
         });
@@ -123,10 +133,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
           ),
         ],
       ),
-      body: isLoading? Center(child: CircularProgressIndicator(
-        key: UniqueKey(),
-      ),
-      ):Padding(
+      body: isLoading? Center(child: CircularProgressIndicator()):Padding(
         padding: const EdgeInsets.all(16.0),
         child:  Form(
           key: _form,
