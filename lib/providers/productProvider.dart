@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 import './product.dart';
 
@@ -53,28 +55,28 @@ class ProductsProvider with ChangeNotifier {
   Product findById(String id) {
     return _item.firstWhere((prod) => prod.id == id);
   }
+  Future <void> addProduct(Product product) {
+    const url = "https://shopapp-f51eb.firebaseio.com/productProvider.json";
+    return http.post(url,body: json.encode({
+      "title": product.title,
+      "description": product.description,
+      "price": product.price,
+      "imageUrl": product.imageUrl,
+      "isFavourite": product.isFavourite,
+    })).then((response) {
+      print(jsonDecode(response.body));
+      final newProduct = Product(
+        title: product.title,
+        description: product.description,
+        price: product.price,
+        imageUrl: product.imageUrl,
+        id: jsonDecode(response.body)["name"],
+      );
+      _item.add(newProduct);
+      // _items.insert(0, newProduct); // at the start of the list
+      notifyListeners();
+    });
 
-  // void showFavoritesOnly() {
-  //   _showFavoritesOnly = true;
-  //   notifyListeners();
-  // }
-
-  // void showAll() {
-  //   _showFavoritesOnly = false;
-  //   notifyListeners();
-  // }
-
-  void addProduct(Product product) {
-    final newProduct = Product(
-      title: product.title,
-      description: product.description,
-      price: product.price,
-      imageUrl: product.imageUrl,
-      id: DateTime.now().toString(),
-    );
-    _item.add(newProduct);
-    // _items.insert(0, newProduct); // at the start of the list
-    notifyListeners();
   }
 
   void updateProduct(String id, Product newProduct) {

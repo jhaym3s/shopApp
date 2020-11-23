@@ -31,6 +31,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     'imageUrl': '',
   };
   var _isInit = true;
+  var isLoading = false;
 
   @override
   void initState() {
@@ -83,6 +84,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
   }
 
   void _saveForm() {
+    setState(() {
+      isLoading = true;
+    });
     final isValid = _form.currentState.validate();
     if (!isValid) {
       return;
@@ -91,10 +95,20 @@ class _EditProductScreenState extends State<EditProductScreen> {
     if (_editedProduct.id != null) {
       Provider.of<ProductsProvider>(context, listen: false)
           .updateProduct(_editedProduct.id, _editedProduct);
+      setState(() {
+        isLoading = false;
+      });
+      Navigator.of(context).pop();
     } else {
-      Provider.of<ProductsProvider>(context, listen: false).addProduct(_editedProduct);
+      Provider.of<ProductsProvider>(context, listen: false).addProduct(_editedProduct)
+          .then((value) {
+        setState(() {
+          isLoading = false;
+        });
+        Navigator.of(context).pop();
+      } );
     }
-    Navigator.of(context).pop();
+
   }
 
   @override
@@ -109,9 +123,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
           ),
         ],
       ),
-      body: Padding(
+      body: isLoading? Center(child: CircularProgressIndicator(
+        key: UniqueKey(),
+      ),
+      ):Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Form(
+        child:  Form(
           key: _form,
           child: ListView(
             children: <Widget>[
