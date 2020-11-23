@@ -55,15 +55,16 @@ class ProductsProvider with ChangeNotifier {
   Product findById(String id) {
     return _item.firstWhere((prod) => prod.id == id);
   }
-  Future <void> addProduct(Product product) {
+  Future <void> addProduct(Product product) async {
     const url = "https://shopapp-f51eb.firebaseio.com/productProvider.json";
-    return http.post(url,body: json.encode({
-      "title": product.title,
-      "description": product.description,
-      "price": product.price,
-      "imageUrl": product.imageUrl,
-      "isFavourite": product.isFavourite,
-    })).then((response) {
+    try {
+      final response = await http.post(url, body: json.encode({
+        "title": product.title,
+        "description": product.description,
+        "price": product.price,
+        "imageUrl": product.imageUrl,
+        "isFavourite": product.isFavourite,
+      }),);
       print(jsonDecode(response.body));
       final newProduct = Product(
         title: product.title,
@@ -75,10 +76,12 @@ class ProductsProvider with ChangeNotifier {
       _item.add(newProduct);
       // _items.insert(0, newProduct); // at the start of the list
       notifyListeners();
-    }).catchError((error){
+    }catch (error){
       print(error);
       throw error;
-    });
+    }
+
+
 
   }
 
