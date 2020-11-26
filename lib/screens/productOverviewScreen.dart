@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/productProvider.dart';
 import '../screens/cartScreen.dart';
 import '../widgets/drawer.dart';
 import '../providers/cart.dart';
@@ -18,6 +19,45 @@ class ProductOverviewScreen extends StatefulWidget {
 class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
   var darkMode = false;
   var _showFavouritesOnly  = false;
+  var _isInit = true;
+  var isLoading = false;
+
+  @override
+  void initState() {
+    // Provider.of<Products>(context).fetchAndSetProducts(); // WON'T WORK!
+    // Future.delayed(Duration.zero).then((_) {
+    //   Provider.of<Products>(context).fetchAndSetProducts();
+    // });
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      setState(() {
+        isLoading = true;
+      });
+      Provider.of<ProductsProvider>(context).fetchAndSetProducts().then((_) {
+        setState(() {
+          isLoading = false;
+        });
+      }).catchError((error){
+        return showDialog(context: context,builder: (context) {
+          return AlertDialog(
+            title: Text(" An error occurred"),
+            content: Text("Check your internet connection"),
+            actions: [
+              FlatButton(onPressed: (){
+                Navigator.of(context).pop();
+              }, child: Text("Okay"))
+            ],
+          );
+        },);
+      });
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

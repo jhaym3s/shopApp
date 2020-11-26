@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -55,6 +57,27 @@ class ProductsProvider with ChangeNotifier {
   Product findById(String id) {
     return _item.firstWhere((prod) => prod.id == id);
   }
+  Future<void> fetchAndSetProducts() async {
+    const url = "https://shopapp-f51eb.firebaseio.com/productProvider.json";
+    try {
+      final response = await http.get(url);
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      final List<Product> loadedProducts = [];
+      extractedData.forEach((prodId, prodData) {
+        loadedProducts.add(Product(
+          id: prodId,
+          title: prodData['title'],
+          description: prodData['description'],
+          price: prodData['price'],
+          imageUrl: prodData['imageUrl'],
+        ));
+      });
+      _item = loadedProducts;
+      notifyListeners();
+    } catch (error) {
+      throw (error);
+    }
+  }
   Future <void> addProduct(Product product) async {
     const url = "https://shopapp-f51eb.firebaseio.com/productProvider.json";
     try {
@@ -105,7 +128,22 @@ class ProductsProvider with ChangeNotifier {
     }
   }
 
-  void deleteProduct(String id) {
+  Future<void> deleteProduct(String id) {
+    final url = "https://shopapp-f51eb.firebaseio.com/productProvider/$id.json";
+    final existingProductIndex = _item.indexWhere((prod) => prod.id == id);
+    var existingProduct = _item[existingProductIndex];
+    _item.removeAt(existingProductIndex);
+    notifyListeners();
+
+    http.delete(url).then((response) {
+      existingProduct = null;
+      print(response.statusCode);
+      if(response.statusCode >= 400){
+        throw HttpException("Wahala ooooo");
+      }
+    } ).catchError((_){
+      _item.insert(existingProductIndex, existingProduct);
+    });
     _item.removeWhere((prod) => prod.id == id);
     notifyListeners();
   }
