@@ -93,12 +93,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
     }
     _form.currentState.save();
     if (_editedProduct.id != null) {
-      Provider.of<ProductsProvider>(context, listen: false)
+     await  Provider.of<ProductsProvider>(context, listen: false)
           .updateProduct(_editedProduct.id, _editedProduct);
-      setState(() {
-        isLoading = false;
-      });
-      Navigator.of(context).pop();
+
     } else {
       try {
         await Provider.of<ProductsProvider>(context, listen: false)
@@ -113,13 +110,18 @@ class _EditProductScreenState extends State<EditProductScreen> {
           content: Text("Something went wrong"),
           ),
         );
-      }finally{
-        setState(() {
-          isLoading = false;
-        });
-        Navigator.of(context).pop();
       }
+      // finally{
+      //   setState(() {
+      //     isLoading = false;
+      //   });
+      //   Navigator.of(context).pop();
+      // }
     }
+    setState(() {
+      isLoading = false;
+    });
+    Navigator.of(context).pop();
 
   }
 

@@ -58,7 +58,8 @@ class ProductsProvider with ChangeNotifier {
   Future <void> addProduct(Product product) async {
     const url = "https://shopapp-f51eb.firebaseio.com/productProvider.json";
     try {
-      final response = await http.post(url, body: json.encode({
+      final response = await http.post(url,
+        body: json.encode({
         "title": product.title,
         "description": product.description,
         "price": product.price,
@@ -85,9 +86,18 @@ class ProductsProvider with ChangeNotifier {
 
   }
 
-  void updateProduct(String id, Product newProduct) {
+  Future<void> updateProduct(String id, Product newProduct) async{
     final prodIndex = _item.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
+      final url = "https://shopapp-f51eb.firebaseio.com/productProvider/$id.json";
+       await http.patch(url,
+        body: json.encode({
+          "title": newProduct.title,
+          "description": newProduct.description,
+          "price":newProduct.price,
+          "imageUrl": newProduct.imageUrl,
+         // "isFavourite": newProduct.isFavourite,
+        }),);
       _item[prodIndex] = newProduct;
       notifyListeners();
     } else {
