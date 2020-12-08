@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop/widgets/orderButton.dart';
 import '../providers/orders.dart';
 import '../providers/cart.dart' show Cart;
 import '../widgets/cartItem.dart' as widget;
@@ -35,17 +36,7 @@ class CartScreen extends StatelessWidget {
                   backgroundColor: Theme.of(context).primaryColor,
                   elevation: 6,
                 ),
-                FlatButton.icon(
-                  onPressed: () {
-                    Provider.of<Orders>(context, listen: false).addOrders(
-                        cart.items.values.toList(),
-                        cart.totalAmount);
-                    cart.clear();
-                  },
-                  icon: Icon(Icons.payment),
-                  label: Text("Buy"),
-                  textColor: Theme.of(context).primaryColor,
-                ),
+               OrderButton(cart: cart,),
               ],
             ),
           ),
@@ -64,3 +55,4 @@ class CartScreen extends StatelessWidget {
     );
   }
 }
+

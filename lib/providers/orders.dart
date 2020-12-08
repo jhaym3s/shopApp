@@ -1,5 +1,7 @@
 
 import 'package:flutter/widgets.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import '../providers/cart.dart';
 
 class OrdersItem{
@@ -20,11 +22,26 @@ class Orders with ChangeNotifier{
     return [..._orders];
   }
 
-  void addOrders(List<CartItem> cartProducts,double total){
+  //this is called in the caartScreen file
+  Future<void> addOrders(List<CartItem> cartProducts,double total) async{
+    const url = "https://shopapp-f51eb.firebaseio.com/orders.json";
+    final timeStamp = DateTime.now();
+     final response = await http.post(url,
+      body: json.encode({
+      "amount": total,
+       "dateTime": timeStamp.toIso8601String(),
+       "products": cartProducts.map((cP) => {
+         "id":cP.id,
+         "title":cP.title,
+         "price": cP.price,
+         "quality": cP.quantity,
+       }).toList()
+      })
+    );
     _orders.insert(0, OrdersItem(
-        id: DateTime.now().toString(),
+        id: json.decode(response.body)["name"],
             products: cartProducts,
-            date: DateTime.now(),
+            date: timeStamp,
             amount: total));
     notifyListeners();
   }
