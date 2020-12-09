@@ -22,6 +22,25 @@ class Orders with ChangeNotifier{
     return [..._orders];
   }
 
+   Future<void> fetchAndSetOrders()async{
+     const url = "https://shopapp-f51eb.firebaseio.com/orders.json";
+    final response = await http.get(url);
+    print(json.decode(response.body));
+    final List<OrdersItem> loadedData = [];
+    final extractedData = json.decode(response.body) as Map<String, dynamic>;
+    if (extractedData == null){
+      return;
+    }
+    extractedData.forEach((orderId, orderData) {
+      loadedData.add(OrdersItem(id: orderId,
+          products: (orderData["products"] as List<dynamic>).map((cItem) =>
+              CartItem(title: cItem["title"], id: cItem["id"], price: cItem["price"], quantity: cItem["quality"])).toList(),
+          date:DateTime.parse(orderData["dateTime"]),
+          amount: orderData["amount"]));
+    });
+    _orders = loadedData.reversed.toList();
+    notifyListeners();
+   }
   //this is called in the caartScreen file
   Future<void> addOrders(List<CartItem> cartProducts,double total) async{
     const url = "https://shopapp-f51eb.firebaseio.com/orders.json";
@@ -34,6 +53,7 @@ class Orders with ChangeNotifier{
          "id":cP.id,
          "title":cP.title,
          "price": cP.price,
+         //mispelled
          "quality": cP.quantity,
        }).toList()
       })

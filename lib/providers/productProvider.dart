@@ -61,6 +61,7 @@ class ProductsProvider with ChangeNotifier {
     const url = "https://shopapp-f51eb.firebaseio.com/productProvider.json";
     try {
       final response = await http.get(url);
+     //print(json.decode(response.body));
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       final List<Product> loadedProducts = [];
       extractedData.forEach((prodId, prodData) {
