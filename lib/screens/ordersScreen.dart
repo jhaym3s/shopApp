@@ -15,26 +15,46 @@ class OrdersScreen extends StatefulWidget {
 class _OrdersScreenState extends State<OrdersScreen> {
   var isLoading = false;
   @override
-  void initState() {
-    Future.delayed(Duration.zero).then((_) async {
-      setState(() {
-        isLoading = true;
-      });
-   await Provider.of<Orders>(context,listen: false).fetchAndSetOrders();
-      setState(() {
-        isLoading = false;
-      });
-    });
-    super.initState();
-  }
+  // void initState() {
+  //   Future.delayed(Duration.zero).then((_) async {
+  //     setState(() {
+  //       isLoading = true;
+  //     });
+  //  await Provider.of<Orders>(context,listen: false).fetchAndSetOrders();
+  //     setState(() {
+  //       isLoading = false;
+  //     });
+  //   });
+  //   super.initState();
+  // }
   @override
   Widget build(BuildContext context) {
-    final ordersData = Provider.of<Orders>(context);
+   // final ordersData = Provider.of<Orders>(context);
     return Scaffold(
       appBar: AppBar(),
       drawer: AppDrawer(),
-      body:isLoading? Center(child: CircularProgressIndicator(),):ListView.builder(itemBuilder: (context, index) =>
-          widget.OrdersItem(ordersData.orders[index]),itemCount: ordersData.orders.length,),
+      body: FutureBuilder(future:Provider.of<Orders>(context,listen: false).fetchAndSetOrders(),
+        builder: (context, snapshot) {
+          if(snapshot.connectionState == ConnectionState.waiting){
+            return Center(child: CircularProgressIndicator(),);
+          }else{
+            if(snapshot.error != null){
+              return Center(child: Text("Hey"),);
+            }else{
+              return Consumer<Orders>(builder: (context, ordersData, child) =>  ListView.builder(itemBuilder: (context, index) =>
+                       widget.OrdersItem(ordersData.orders[index]),
+                     itemCount: ordersData.orders.length,)
+                   );
+            }
+          }
+         return Center(child: Text("you made it here"));
+      },)
     );
   }
 }
+      // isLoading? Center(child: CircularProgressIndicator(),):
+      // ListView.builder(itemBuilder: (context, index) =>
+      //     widget.OrdersItem(ordersData.orders[index]),
+      //   itemCount: ordersData.orders.length,),
+   // );
+
