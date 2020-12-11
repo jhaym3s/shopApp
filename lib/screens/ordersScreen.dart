@@ -41,7 +41,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
             if(snapshot.error != null){
               return Center(child: Text("Hey"),);
             }else{
-              return Consumer<Orders>(builder: (context, ordersData, child) =>  ListView.builder(itemBuilder: (context, index) =>
+              return Consumer<Orders>(builder: (context, ordersData, child) =>
+                  ListView.builder(itemBuilder: (context, index) =>
                        widget.OrdersItem(ordersData.orders[index]),
                      itemCount: ordersData.orders.length,)
                    );
@@ -52,9 +53,5 @@ class _OrdersScreenState extends State<OrdersScreen> {
     );
   }
 }
-      // isLoading? Center(child: CircularProgressIndicator(),):
-      // ListView.builder(itemBuilder: (context, index) =>
-      //     widget.OrdersItem(ordersData.orders[index]),
-      //   itemCount: ordersData.orders.length,),
-   // );
+
 

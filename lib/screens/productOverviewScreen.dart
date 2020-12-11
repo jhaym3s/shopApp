@@ -13,6 +13,7 @@ enum filterOptions {
   All,
 }
 class ProductOverviewScreen extends StatefulWidget {
+  static const routeName =" productOverViewScreen";
   @override
   _ProductOverviewScreenState createState() => _ProductOverviewScreenState();
 }
