@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:shop/models/httpException.dart';
 
 class Auth with ChangeNotifier{
   String token;
@@ -12,12 +13,21 @@ class Auth with ChangeNotifier{
   
   Future<void> authenticationFunc(String email, String password, String urlDifference)async{
     final  url = "https://identitytoolkit.googleapis.com/v1/accounts:$urlDifference=AIzaSyAU5yYvKhtVN2xx82fjflGHk4fxHeMFAyg";
-    final response =  await http.post(url,body: json.encode({
-      "email": email,
-      "password": password,
-      "returnSecureToken": true,
-    }));
-    print(json.decode(response.body));
+    try{
+      final response =  await http.post(url,body: json.encode({
+        "email": email,
+        "password": password,
+        "returnSecureToken": true,
+      }));
+      print(json.decode(response.body));
+      final responseData = json.decode(response.body);
+      if(responseData["error"] != null){
+        throw HttpException(responseData["error"]["message"]);
+      }
+    }catch(error){
+      throw error;
+    }
+
   }
   
 
