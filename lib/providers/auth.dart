@@ -7,10 +7,13 @@ import 'package:shop/models/httpException.dart';
 class Auth with ChangeNotifier{
   String _token;
   DateTime _expiryDate;
-  String userId;
+  String _userId;
 
   bool get isAuth{
     return token != null;
+  }
+  String get userId{
+    return _userId;
   }
 
   String get token{
@@ -33,7 +36,7 @@ class Auth with ChangeNotifier{
         throw HttpException(responseData["error"]["message"]);
       }
       _token = responseData['idToken'];
-      userId = responseData['localId'];
+      _userId = responseData['localId'];
       _expiryDate = DateTime.now().add(
         Duration(
           seconds: int.parse(

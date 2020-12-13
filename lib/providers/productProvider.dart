@@ -83,7 +83,7 @@ class ProductsProvider with ChangeNotifier {
     }
   }
   Future <void> addProduct(Product product) async {
-    const url = "https://shopapp-f51eb.firebaseio.com/productProvider.json";
+    final url = "https://shopapp-f51eb.firebaseio.com/productProvider.json?auth=$authToken";
     try {
       final response = await http.post(url,
         body: json.encode({
@@ -113,7 +113,7 @@ class ProductsProvider with ChangeNotifier {
   Future<void> updateProduct(String id, Product newProduct) async{
     final prodIndex = _item.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
-      final url = "https://shopapp-f51eb.firebaseio.com/productProvider/$id.json";
+      final url = "https://shopapp-f51eb.firebaseio.com/productProvider/$id.json?auth=$authToken";
        await http.patch(url,
         body: json.encode({
           "title": newProduct.title,
@@ -131,7 +131,7 @@ class ProductsProvider with ChangeNotifier {
 
   //ignore: missing_return
   Future<void> deleteProduct(String id) {
-    final url = "https://shopapp-f51eb.firebaseio.com/productProvider/$id.json";
+    final url = "https://shopapp-f51eb.firebaseio.com/productProvider/$id.json?auth=$authToken";
     final existingProductIndex = _item.indexWhere((prod) => prod.id == id);
     var existingProduct = _item[existingProductIndex];
     _item.removeAt(existingProductIndex);

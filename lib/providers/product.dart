@@ -19,12 +19,12 @@ class Product with ChangeNotifier{
      this.isFavourite = false,
     @required this.price});
 
-  Future<void> toggleFavoritesStatus() async{
+  Future<void> toggleFavoritesStatus(String authToken,String userId) async{
     //used in the productItem file
     final oldStatus = isFavourite;
     isFavourite = !isFavourite;
     notifyListeners();
-    final url = "https://shopapp-f51eb.firebaseio.com/productProvider/$id.json";
+    final url = "https://shopapp-f51eb.firebaseio.com/userFavourite/$userId/$id.json?auth=$authToken";
     try {
       final response = await http.patch(url, body: json.encode({
         "isFavourite": isFavourite,

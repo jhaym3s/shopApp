@@ -4,12 +4,14 @@ import '../providers/productProvider.dart';
 import '../screens/productDetailScreen.dart';
 import 'package:provider/provider.dart';
 import '../providers/product.dart';
+import '../providers/auth.dart';
 
 class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final product = Provider.of<Product>(context);
     final cart = Provider.of<Cart>(context);
+    final auth = Provider.of<Auth>(context);
     return ClipRRect(
       borderRadius: BorderRadius.circular(15),
       child: GridTile(
@@ -30,7 +32,7 @@ class ProductItem extends StatelessWidget {
             products.isFavourite ? Icons.favorite : Icons.favorite_border),
         onPressed: () {
           //toggleFavoritesStatus is in the product.dart file
-          product.toggleFavoritesStatus();
+          product.toggleFavoritesStatus(auth.token,auth.userId);
         },
         color: Theme
             .of(context)
