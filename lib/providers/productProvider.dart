@@ -7,6 +7,9 @@ import 'dart:convert';
 import './product.dart';
 
 class ProductsProvider with ChangeNotifier {
+  final String authToken;
+
+  ProductsProvider(this.authToken,this._item);
   List<Product> _item = [
     // Product(
     //   id: 'p1',
@@ -58,7 +61,7 @@ class ProductsProvider with ChangeNotifier {
     return _item.firstWhere((prod) => prod.id == id);
   }
   Future<void> fetchAndSetProducts() async {
-    const url = "https://shopapp-f51eb.firebaseio.com/productProvider.json";
+    final url = "https://shopapp-f51eb.firebaseio.com/productProvider.json?auth=$authToken";
     try {
       final response = await http.get(url);
      //print(json.decode(response.body));

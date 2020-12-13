@@ -129,9 +129,9 @@ class _AuthCardState extends State<AuthCard> {
     });
     try{
       if (_authMode == AuthMode.Login) {
-        await Provider.of<Auth>(context,listen: false).login(_authData["email"],_authData["password"]);
+        await Provider.of<Auth>(context,listen:false).login(_authData["email"],_authData["password"]);
       } else {
-        await Provider.of<Auth>(context,listen: false ).signUp(_authData["email"],
+        await Provider.of<Auth>(context,listen:false ).signUp(_authData["email"],
             _authData["password"]);
       }
     } on HttpException catch(error){
@@ -149,7 +149,7 @@ class _AuthCardState extends State<AuthCard> {
       }
       errorDialog(errorMessage);
     }catch(error){
-      var errorMessage = "Check your network";
+      const errorMessage = "Check your network";
       errorDialog(errorMessage);
     }
 
