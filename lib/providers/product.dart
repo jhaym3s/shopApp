@@ -26,9 +26,9 @@ class Product with ChangeNotifier{
     notifyListeners();
     final url = "https://shopapp-f51eb.firebaseio.com/userFavourite/$userId/$id.json?auth=$authToken";
     try {
-      final response = await http.patch(url, body: json.encode({
-        "isFavourite": isFavourite,
-      }));
+      final response = await http.put(url, body: json.encode(
+         isFavourite,
+      ));
       if(response.statusCode >= 400){
         isFavourite = oldStatus;
         notifyListeners();
