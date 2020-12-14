@@ -9,7 +9,7 @@ import './product.dart';
 class ProductsProvider with ChangeNotifier {
   final String authToken,userId;
 
-  ProductsProvider(this.authToken,this._item,this.userId);
+  ProductsProvider(this.authToken,this.userId,this._item);
   List<Product> _item = [
     // Product(
     //   id: 'p1',
@@ -69,8 +69,9 @@ class ProductsProvider with ChangeNotifier {
       if(extractedData == null){
         return ;
       }
+      //'https://flutter-update.firebaseio.com/userFavorites/$userId.json?auth=$authToken';
          // url = "https://shopapp-f51eb.firebaseio.com/userFavourite/$userId.json?auth=$authToken";
-     url ='https://shopapp-f51eb.firebaseio.comuserFavourites/$userId.json?auth=$authToken';
+     url ='https://shopapp-f51eb.firebaseio.com/userFavourites/$userId.json?auth=$authToken';
       final favoriteResponse = await http.get(url);
       final favoriteData = json.decode(favoriteResponse.body);
       final List<Product> loadedProducts = [];
