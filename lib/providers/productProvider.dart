@@ -60,8 +60,9 @@ class ProductsProvider with ChangeNotifier {
   Product findById(String id) {
     return _item.firstWhere((prod) => prod.id == id);
   }
-  Future<void> fetchAndSetProducts() async {
-    var url = "https://shopapp-f51eb.firebaseio.com/productProvider.json?auth=$authToken";
+  Future<void> fetchAndSetProducts([bool filterByUser = false]) async {
+    String filterString = filterByUser ? 'orderBy"creatorId"&equalTo="$userId"': '';
+    var url = 'https://shopapp-f51eb.firebaseio.com/productProvider.json?auth=$authToken&$filterString';
     try {
       final response = await http.get(url);
      //print(json.decode(response.body));
@@ -69,9 +70,7 @@ class ProductsProvider with ChangeNotifier {
       if(extractedData == null){
         return ;
       }
-      //'https://flutter-update.firebaseio.com/userFavorites/$userId.json?auth=$authToken';
-         // url = "https://shopapp-f51eb.firebaseio.com/userFavourite/$userId.json?auth=$authToken";
-     url ='https://shopapp-f51eb.firebaseio.com/userFavourites/$userId.json?auth=$authToken';
+     url ='https://shopapp-f51eb.firebaseio.com/userFavourite/$userId.json?auth=$authToken';
       final favoriteResponse = await http.get(url);
       final favoriteData = json.decode(favoriteResponse.body);
       final List<Product> loadedProducts = [];
@@ -90,9 +89,10 @@ class ProductsProvider with ChangeNotifier {
     } catch (error) {
       throw (error);
     }
+    notifyListeners();
   }
   Future <void> addProduct(Product product) async {
-    final url = "https://shopapp-f51eb.firebaseio.com/productProvider.json?auth=$authToken";
+    final url = 'https://shopapp-f51eb.firebaseio.com/productProvider.json?auth=$authToken';
     try {
       final response = await http.post(url,
         body: json.encode({
@@ -100,6 +100,7 @@ class ProductsProvider with ChangeNotifier {
         "description": product.description,
         "price": product.price,
         "imageUrl": product.imageUrl,
+          "creatorId": userId,
       }),);
       print(jsonDecode(response.body));
       final newProduct = Product(

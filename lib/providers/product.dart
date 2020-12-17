@@ -35,7 +35,6 @@ class Product with ChangeNotifier{
       }
     }catch(error){
       isFavourite = oldStatus;
-      notifyListeners();
     }
   }
 
