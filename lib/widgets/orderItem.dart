@@ -35,7 +35,7 @@ class _OrdersItemState extends State<OrdersItem> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(e.title,style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-              Text("${e.quantity} x ${e.price}",style: TextStyle(fontSize: 20,color: Colors.grey),)
+              Text("${e.quantity} x ${e.price}",style: TextStyle(fontSize: 20,color: Colors.grey),),
             ],
           ),).toList(),
            ),

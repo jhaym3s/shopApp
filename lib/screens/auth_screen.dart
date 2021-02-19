@@ -60,7 +60,7 @@ class AuthScreen extends StatelessWidget {
                             blurRadius: 8,
                             color: Colors.black26,
                             offset: Offset(0, 2),
-                          )
+                          ),
                         ],
                       ),
                       child: Text(

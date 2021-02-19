@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop/screens/productOverviewScreen.dart';
 import '../providers/auth.dart';
 import 'package:shop/screens/ordersScreen.dart';
 import '../screens/userProductScreen.dart';
@@ -17,7 +18,7 @@ class AppDrawer extends StatelessWidget {
           Divider(),
           ListTile(
             leading: IconButton(icon: Icon(Icons.shop), onPressed: (){
-              Navigator.of(context).pushReplacementNamed("/");
+              Navigator.of(context).pushReplacementNamed(ProductOverviewScreen.routeName);
             }),
             title: Text("Shop"),
           ),

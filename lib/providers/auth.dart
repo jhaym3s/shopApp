@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -64,7 +63,7 @@ class Auth with ChangeNotifier{
   Future<bool> tryAutoLogin()async{
     final preferences = await SharedPreferences.getInstance();
     if(!preferences.containsKey("userData")){
-      return false;
+    return false;
     }
     final extractedData = json.decode(preferences.getString("userData"))as Map<String, Object>;
     final newExpiryDate =DateTime.parse(extractedData["expiryDate"]);
