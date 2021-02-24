@@ -28,7 +28,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
     // Provider.of<Products>(context).fetchAndSetProducts(); // WON'T WORK!
     // Future.delayed(Duration.zero).then((_) {
     //   Provider.of<Products>(context).fetchAndSetProducts();
-    // });
+    // }); with the delay guy  it would work
     super.initState();
   }
 

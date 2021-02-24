@@ -8,9 +8,11 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: Text("Loading....."),
+    return Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(
+          backgroundColor: Colors.purpleAccent,
+        ),
       ),
     );
   }
