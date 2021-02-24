@@ -117,14 +117,14 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
     heightAnimator = Tween<Size>(begin: Size(double.infinity, 260), end:Size(double.infinity, 325)).animate(
       CurvedAnimation(parent: _controller, curve: Curves.linear),
     );
-    heightAnimator.addListener(() {
-      setState((){});});
+    // heightAnimator.addListener(() {
+    //   setState((){});});
   }
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    _controller.dispose();
+   // _controller.dispose();
   }
   var _isLoading = false;
   final _passwordController = TextEditingController();
@@ -200,12 +200,13 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
         borderRadius: BorderRadius.circular(10.0),
       ),
       elevation: 8.0,
-      child: Container(
+      child:AnimatedBuilder(animation: heightAnimator,builder:(context,aniChild)=>Container(
         height: heightAnimator.value.height,
         constraints:
-            BoxConstraints(minHeight:heightAnimator.value.height,),
+        BoxConstraints(minHeight:heightAnimator.value.height,),
         width: deviceSize.width * 0.75,
         padding: EdgeInsets.all(16.0),
+        child: aniChild,),
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
