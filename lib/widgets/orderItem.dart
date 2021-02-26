@@ -17,31 +17,37 @@ class _OrdersItemState extends State<OrdersItem> {
   var expanded = false;
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.all(10),child: Column(
-      children: [
-        ListTile(
-          title: Text("${widget.orderData.amount}"),
-          subtitle: Text(DateFormat("dd/MM/yyyy hh:mm").format(widget.orderData.date)),
-          trailing: IconButton(icon: Icon(expanded?Icons.expand_less:Icons.expand_more),
-            onPressed: (){
-            setState(() {
-              expanded = !expanded;
-            });
-          },),
-        ),
-        if(expanded) Container(height:min(widget.orderData.products.length*20.0 + 20, 160),
-          child:ListView(children: widget.orderData.products.map((e) => Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(e.title,style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-              Text("${e.quantity} x ${e.price}",style: TextStyle(fontSize: 20,color: Colors.grey),),
-            ],
-          ),).toList(),
-           ),
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 300),
+      height: expanded?min(widget.orderData.products.length*20.0 + 20, 160):95,
+      child: Card(
+        margin: EdgeInsets.all(10),child: Column(
+        children: [
+          ListTile(
+            title: Text("${widget.orderData.amount}"),
+            subtitle: Text(DateFormat("dd/MM/yyyy hh:mm").format(widget.orderData.date)),
+            trailing: IconButton(icon: Icon(expanded?Icons.expand_less:Icons.expand_more),
+              onPressed: (){
+              setState(() {
+                expanded = !expanded;
+              });
+            },),
           ),
-        ],
-     ),
+            AnimatedContainer(
+              height: expanded?min(widget.orderData.products.length*20.0 + 20, 160):0,
+            duration: Duration(milliseconds: 300),
+            child:ListView(children: widget.orderData.products.map((e) => Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(e.title,style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+                Text("${e.quantity} x ${e.price}",style: TextStyle(fontSize: 20,color: Colors.grey),),
+              ],
+            ),).toList(),
+             ),
+            ),
+          ],
+       ),
+      ),
     );
   }
 }

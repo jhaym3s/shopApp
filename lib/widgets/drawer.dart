@@ -26,8 +26,10 @@ class AppDrawer extends StatelessWidget {
           ),
           Divider(),
           ListTile(
-            leading: IconButton(icon: Icon(Icons.payment), onPressed: (){
+            onTap: (){
               Navigator.of(context).pushReplacementNamed(OrdersScreen.routeName);
+            },
+            leading: IconButton(icon: Icon(Icons.payment), onPressed: (){
             }),
             title: Text("Orders"),
 
